@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 import chat
 import image
 
@@ -9,10 +9,8 @@ def main():
     if request.method == 'POST':
       # TO:ちょうくん
       # POSTリクエストで、contentという名前で、json形式のデータが送られてくるよ
-      content = {
-          "opponent": "お母さん",
-          "feeling": "感謝の気持ち"
-      }
+      content = request.form["content"]
+
       # 受け取る処理を書いてみよう。
 
 
@@ -28,10 +26,11 @@ def main():
         "example": "ひまわりのように、いつもあなたのことを一途に考えています。"
       }
       """
+      flower_name = flower_info["name_en"]
       
 
       # えんぴつくんがやってくれる、画像検索から画像のurlを取得する処理
-      image_url = image.image("ひまわり")
+      image_url = image.image(flower_name)
 
       # TO:ちょうくん
       # ここで、flower_infoとimage_urlを組み合わせて、json形式で返してね
@@ -44,8 +43,9 @@ def main():
         "example": "ひまわりのように、いつもあなたのことを一途に考えています。"
       }
       """
+      flower_info["image"] = image_url
 
-      return image_url
+      return flower_info
 
 if __name__ == '__main__':
     app.run()
