@@ -1,19 +1,44 @@
 # ここに画像検索のAPIを叩く処理を書いてね
-import requests
-import json
+#ライブラリのインポート
+from requests import get
+from json import load,loads
 from os import chdir,getcwd
 from os.path import dirname
 
+#定数の設定
+HOWMANY = 1
+WIDTH = 100
+HIGHT = 50
+
+#Jsonの読み込み
 if __name__ == "__main__":
     chdir(dirname(__file__))
     print(getcwd())
-
 with open("UnsplashAPIkey.json") as f:
-    KEYS = json.load(f)
-    
+    KEYS = load(f)
+
 def image(flower_name):
-    print(flower_name)
-    return "https://picsum.photos/200/300"#例示を画像URLに変更
+    """花の写真を指すurlを返します。flower_nameは必ず英名の文字列を渡してください。"""
+
+    #unsplashAPIに{flower_name}の写真を1つ要求
+    result = get("https://api.unsplash.com/photos/random/?"
+                 +f"client_id={KEYS['AccessKey']}"
+                 +f"&query={flower_name}"
+                 +f"&count={HOWMANY}")
+    
+    #APIにエラーが発生した時は0を返す
+    if result.status_code != 200:
+        return 0
+    
+    parsed_result = loads(result.text)
+
+    raw_image_url = parsed_result[0]["urls"]["raw"]
+
+    #APIの機能を用いて画像を成形
+    #refer "https://unsplash.com/documentation#supported-parameters"
+    image_url = raw_image_url
+
+    return image_url
 
 if __name__ == "__main__":
-    print(KEYS)
+    print(image("sunflower"))
