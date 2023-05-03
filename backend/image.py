@@ -4,6 +4,7 @@ from requests import get
 from json import load,loads
 from os import chdir,getcwd
 from os.path import dirname
+from datetime import datetime
 
 #定数の設定
 HOWMANY = 1
@@ -16,11 +17,24 @@ if __name__ == "__main__":
 with open("UnsplashAPIkey.json") as f:
     KEYS = load(f)
 
+#サーバーの起動中保持する変数を設定
+last_update = datetime.now().hour
+request_is_vailed = True
+
 def image(flower_name):
     """花の写真を指すurlを返します。
     flower_nameは必ず英名の文字列を渡してください。
     何らかのエラーにより画像を取得できなかった場合はintの0を返します。
     """
+    global last_update,request_is_vailed
+
+    print(f"get:{flower_name}")
+    #クエリを使い果たしたらリクエストを投げない。
+    if not request_is_vailed:
+        if last_update != datetime.now().hour:
+            last_update = datetime.now().hour
+        else:
+            return 0
 
     #unsplashAPIに{flower_name}の写真を1つ要求
     try:
@@ -34,9 +48,14 @@ def image(flower_name):
     if result.status_code != 200:
         return 0
     
+    #結果から画像URLを抽出
     parsed_result = loads(result.text)
-
     raw_image_url = parsed_result[0]["urls"]["raw"]
+
+    #残りクエリ回数を確認
+    print("UnsplashAPI: X-Ratelimit-Remaining:",result.headers["X-Ratelimit-Remaining"])
+    if result.headers["X-Ratelimit-Remaining"]==0:
+        request_is_vailed = False
 
     #APIの機能を用いて画像を成形
     #refer "https://unsplash.com/documentation#supported-parameters"
