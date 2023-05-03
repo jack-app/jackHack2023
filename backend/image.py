@@ -7,6 +7,7 @@ from os.path import dirname
 
 #定数の設定
 HOWMANY = 1
+ASPECTRATE = "4:3" #横:縦
 
 #Jsonの読み込み
 if __name__ == "__main__":
