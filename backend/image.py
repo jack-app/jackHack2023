@@ -6,4 +6,4 @@ def image(flower_name):
     # ここに画像検索のAPIを叩く処理を書いてね
     # 以下に示した例みたいな形で、urlをreturnすることができたらok!
 
-    return "https://hogehoge.com"
+    return "https://picsum.photos/200/300"#例示を画像URLに変更
