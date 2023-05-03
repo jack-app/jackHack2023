@@ -14,6 +14,7 @@ def chat(content):
 
     # ここに入力を受け取ってchatGPTのAPIの処理を書いてね
     # 以下に示した例みたいな形でreturnすることができたらok!
+    # chatGPTのAPIにどのように渡せばいいか工夫してやってみよう！
     
     # 返すものの例
     return {
