@@ -1,17 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import background from "../../public/background_image.png";
 import { Result } from "../../components/result";
 import { Forms } from "../../components/forms";
 import { Loading } from "../../components/loading";
 
+interface ResultType {
+  name: string;
+  image: string;
+  flower_symbolism: string;
+  example: string;
+}
+
 export default function Search() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [result, setResult] = useState<ResultType | null>(null);
+
   return (
     <>
-      <div className="container">
-        <Forms />
-        <Loading />
-        <Result />
-      </div>
+      {
+        <div className="container">
+          {!isLoading && !result && <Forms />}
+          {isLoading && <Loading />}
+          {result && <Result result={result} />}
+        </div>
+      }
 
       <style jsx>{`
         .container {
