@@ -3,3 +3,4 @@ env
 .vscode
 activateNagoyayuu15.bat
 UnsplashAPIkey.json
+__pycache__
