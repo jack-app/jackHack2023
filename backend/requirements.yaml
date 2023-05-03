@@ -1,0 +1,29 @@
+name: flower
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - bzip2=1.0.8=h3422bc3_4
+  - ca-certificates=2023.01.10=hca03da5_0
+  - click=8.0.4=py39hca03da5_0
+  - flask=2.2.2=py39hca03da5_0
+  - importlib-metadata=6.0.0=py39hca03da5_0
+  - itsdangerous=2.0.1=pyhd3eb1b0_0
+  - jinja2=3.1.2=py39hca03da5_0
+  - libffi=3.4.2=h3422bc3_5
+  - libsqlite=3.40.0=h76d750c_1
+  - libzlib=1.2.13=h03a7124_4
+  - markupsafe=2.1.1=py39h1a28f6b_0
+  - ncurses=6.3=h07bb92c_1
+  - openssl=3.1.0=h53f4e23_3
+  - pip=23.1.2=pyhd8ed1ab_0
+  - python=3.9.16=hea58f1e_0_cpython
+  - readline=8.2=h92ec313_1
+  - setuptools=67.7.2=pyhd8ed1ab_0
+  - tk=8.6.12=he1e0b03_0
+  - tzdata=2023c=h71feb2d_0
+  - werkzeug=2.2.3=py39hca03da5_0
+  - wheel=0.40.0=pyhd8ed1ab_0
+  - xz=5.2.6=h57fd34a_0
+  - zipp=3.11.0=py39hca03da5_0
+prefix: /Users/nakamurayusaku/miniforge3/envs/flower

@@ -25,5 +25,5 @@ pip install -r requirements.txt
 - conda を使ってる人
 
 ```
-conda install -r conda_requirements.txt
+conda env create -f requirements.yaml
 ```
