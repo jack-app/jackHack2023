@@ -1,5 +1,5 @@
-import Head from "next/head";
 import background from "../public/background_image.png";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -10,7 +10,9 @@ export default function Home() {
           <h2 className="subtitle">サブタイトル</h2>
         </div>
         <div className="start">
-          <button className="button">Start</button>
+          <Link href="/search">
+            <button className="button">Start</button>
+          </Link>
         </div>
       </div>
 
