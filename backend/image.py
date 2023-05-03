@@ -7,8 +7,6 @@ from os.path import dirname
 
 #定数の設定
 HOWMANY = 1
-WIDTH = 100
-HIGHT = 50
 
 #Jsonの読み込み
 if __name__ == "__main__":
@@ -18,15 +16,20 @@ with open("UnsplashAPIkey.json") as f:
     KEYS = load(f)
 
 def image(flower_name):
-    """花の写真を指すurlを返します。flower_nameは必ず英名の文字列を渡してください。"""
+    """花の写真を指すurlを返します。
+    flower_nameは必ず英名の文字列を渡してください。
+    何らかのエラーにより画像を取得できなかった場合はintの0を返します。
+    """
 
     #unsplashAPIに{flower_name}の写真を1つ要求
-    result = get("https://api.unsplash.com/photos/random/?"
+    try:
+        result = get("https://api.unsplash.com/photos/random/?"
                  +f"client_id={KEYS['AccessKey']}"
                  +f"&query={flower_name}"
                  +f"&count={HOWMANY}")
-    
-    #APIにエラーが発生した時は0を返す
+    except:
+        return 0
+
     if result.status_code != 200:
         return 0
     
@@ -36,9 +39,9 @@ def image(flower_name):
 
     #APIの機能を用いて画像を成形
     #refer "https://unsplash.com/documentation#supported-parameters"
-    image_url = raw_image_url
+    image_url = raw_image_url + f"&ar=4:3&crop=entropy&fit=crop"
 
     return image_url
 
 if __name__ == "__main__":
-    print(image("sunflower"))
+    print(image("Iris"))
