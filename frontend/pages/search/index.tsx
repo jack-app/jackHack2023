@@ -14,7 +14,7 @@ interface ResultType {
 
 export default function Search() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [result, setResult] = useState<ResultType | null>({ name: "", image: "", flower_symbolism: "", example: "" });
+  const [result, setResult] = useState<ResultType | null>(null);
 
   const handleClick = async (opponent: string, feeling: string) => {
     setIsLoading(true);
@@ -38,7 +38,14 @@ export default function Search() {
         <div className="container">
           {!isLoading && !result && <Forms handleClick={handleClick} />}
           {isLoading && <Loading />}
-          {result && <Result result={result} />}
+          {result && (
+            <Result
+              name={result.name}
+              image={result.image}
+              flower_symbolism={result.flower_symbolism}
+              example={result.example}
+            />
+          )}
         </div>
       }
 

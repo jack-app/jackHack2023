@@ -2,89 +2,81 @@ import React from "react";
 import sunflower from "../public/sunflower.png";
 
 interface ResultProps {
-  result: {
-    name: string;
-    image: string;
-    flower_symbolism: string;
-    example: string;
-  };
+  name: string;
+  image: string;
+  flower_symbolism: string;
+  example: string;
 }
 
-export const Result: React.FC<ResultProps> = (result) => {
+export const Result: React.FC<ResultProps> = (props) => {
+  const { name, image, flower_symbolism, example } = props;
+
   return (
     <>
-      {/* :TOもんちゃん  ここにHTMLを書いてね */}
-      <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300&display=swap');
-</style>
-      
       <div className="back">
-
-        <img src={sunflower.src} alt="result flower" />
+        <img src={image} alt="result flower" className="image" />
 
         <div className="contents">
-         <div className="name">
-          ひまわり
-         </div>
-         <div className="meaning">
-          <span>花言葉</span>   私はあなただけを見つめています
-         </div>
-         <div className="examples">
-          <span>贈る時のことば</span>     これからもずっとあなたを好きでいますよ。
-         </div>
+          <div className="name">{name}</div>
+          <div className="meaning">
+            <span>花言葉</span> {flower_symbolism}
+          </div>
+          <div className="examples">
+            <span>贈る時のことば</span> {example}
+          </div>
         </div>
-
       </div>
 
-
-
-
-      {/* :TOもんちゃん  ここにcssを書いてね */}
       <style jsx>{`
-      
-       .contents {
-         
-       }
         .back {
           background-color: rgb(255, 255, 255, 0.5);
           width: 100%;
           height: 100%;
           display: flex;
-          text-align: center;
+          flex-direction: row;
+          justify-content: space-around;
+          align-items: center;
+          padding: 5% 10%;
+        }
+
+        .contents {
+          padding-left: 64px;
+        }
+
+        .image {
+          max-width: 40%;
+          max-height: 80%;
         }
         .name {
-          font-size: 70px;
-          font-family: "Noto Serif JP", serif;
-          padding-left: 50px;
-          padding-top: 50px;
-          font-weight: bold;
+          font-size: 64px;
+          font-family: serif;
         }
         .meaning {
-          font-size: 30px;
-          font-family: "Noto Serif JP", serif;
-          padding-left: 70px;
-          padding-top: 80px;        
+          font-size: 24px;
+          font-family: serif;
+          margin-top: 60px;
+          font-weight: 100;
         }
         .meaning span {
-          font-size: 45px;
-          color: #F08080;
-          font-family: "Noto Serif JP", serif;
+          font-size: 36px;
+          color: #f08080;
+          font-family: serif;
           padding-right: 30px;
           display: block;
         }
         .examples {
-          font-size: 30px;
-          font-family: "Noto Serif JP", serif;
-          padding-left: 80px;
+          font-size: 24px;
+          font-family: serif;
           padding-top: 50px;
+          font-weight: 100;
         }
         .examples span {
-          font-size: 40px;
-          color: #FF9966;
+          font-size: 36px;
+          color: #ff9966;
           padding-right: 30px;
           display: block;
         }
       `}</style>
     </>
   );
-}
+};
