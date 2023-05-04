@@ -19,7 +19,7 @@ export default function Search() {
   const handleClick = async () => {
     setIsLoading(true);
     await axios
-      .post("http://127.0.0.1:5000", { opponent: "お母さん", feeling: "感謝" })
+      .post("http://127.0.0.1:5000", { content: { opponent: "お母さん", feeling: "感謝" } })
       .then((res) => {
         setResult(res.data);
         setIsLoading(false);
