@@ -1,6 +1,6 @@
 # ここに画像検索のAPIを叩く処理を書いてね
 #ライブラリのインポート
-from requests import get
+from requests import get,Response
 from json import load,loads
 from os import chdir,getcwd
 from os.path import dirname
@@ -9,13 +9,50 @@ from datetime import datetime
 #定数の設定
 HOWMANY = 1
 ASPECTRATE = "4:3" #横:縦
-API = "unsplash"#unsplash/
+API = "google"#unsplash/google/bing
 #Jsonの読み込み
 if __name__ == "__main__":
     chdir(dirname(__file__))
     print(getcwd())
-with open("UnsplashAPIkey.json") as f:
+with open("APIkey.json") as f:
     KEYS = load(f)
+
+
+
+def query(url):
+    result = get(url)
+    if result.status_code != 200:
+        print(result.status_code)
+        print(result.reason)
+        return result,1
+    return result,0
+
+
+
+#画像検索APIにCustom search APIを用いる場合
+
+def google(flower_name):
+    #Custom search APIに画像を要求
+    try:
+        result,status = query("https://customsearch.googleapis.com/customsearch/v1?"
+                     +f"key={KEYS['Custom Search API']['APIKey']}"
+                     +f"&cx={KEYS['Custom Search API']['SearchEngineID']}"
+                     +f"&q='(flower|花) {flower_name}'"
+                     +"&fileType='jpeg png jpg'"
+                     +"&searchType=image"
+                     +"&imgType=photo"
+                     +"&imgSize=xlarge"
+                     +"&num=1"
+                     )
+    except:
+        return 0
+    if status == 1:
+        return 0
+    
+    #抽出返答
+
+    return loads(result.content)["items"][0]["link"]
+
 
 
 #画像検索APIにunsplashを用いる場合
@@ -41,16 +78,15 @@ def unsplash(flower_name):
 
     #unsplashAPIに{flower_name}の写真を1つ要求
     try:
-        result = get("https://api.unsplash.com/photos/random/?"
-                 +f"client_id={KEYS['Unsplash']['AccessKey']}"
-                 +f"&query=\"{flower_name}\""
-                 +f"&count={HOWMANY}")
+        result,status = query("https://api.unsplash.com/photos/random/?"
+                    +f"client_id={KEYS['Unsplash']['AccessKey']}"
+                    +f"&query=\"{flower_name}\""
+                    +f"&count={HOWMANY}")
     except:
         return 0
-
-    if result.status_code != 200:
+    if status == 1:
         return 0
-    
+
     #結果から画像URLを抽出
     parsed_result = loads(result.text)
     raw_image_url = parsed_result[0]["urls"]["raw"]
@@ -72,7 +108,9 @@ def unsplash(flower_name):
 def image(flower_name):
     if API=="unsplash":
         return unsplash(flower_name)
+    elif API=="google":
+        return google(flower_name)
 
 
 if __name__ == "__main__":
-    print(image("flower blue rose"))
+    print(image("blue rose"))
