@@ -4,7 +4,7 @@ import chat
 import image
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/*": {"origins": "https://floral-gifter.netlify.app/"}})
+cors = CORS(app, resources={r"/*": {"origins": "https://floral-gifter.netlify.app/*"}})
 
 @app.route('/', methods=['POST'])
 def main():
