@@ -1,24 +1,38 @@
-import React from "react";
+import React, { useRef } from "react";
 
 interface FormsProps {
-  handleClick: () => void;
+  handleClick: (opponent: string, feeling: string) => void;
 }
 
 export const Forms: React.FC<FormsProps> = (props) => {
   const { handleClick } = props;
+
+  const whoRef = useRef<HTMLInputElement>(null);
+  const feelRef = useRef<HTMLTextAreaElement>(null);
+
+  const send = function () {
+    const opponent = whoRef.current?.value;
+    const feeling = feelRef.current?.value;
+    if (opponent && feeling) {
+      handleClick(opponent, feeling);
+    }
+
+    if (!opponent) alert("誰に花を送りますか？");
+    if (!feeling) alert("どんな気持ちを伝えますか？");
+  };
 
   return (
     <>
       <div className="forms">
         <div className="who">
           <div>誰に花を送りますか？</div>
-          <input type="text" className="form-who" />
+          <input type="text" className="form-who" ref={whoRef} />
         </div>
         <div className="feel">
           <div>どんな気持ちを伝えますか？</div>
-          <textarea className="form-feel" />
+          <textarea className="form-feel" ref={feelRef} />
         </div>
-        <button onClick={handleClick} className="search">
+        <button onClick={send} className="search">
           検索
         </button>
       </div>
@@ -55,7 +69,6 @@ export const Forms: React.FC<FormsProps> = (props) => {
         }
 
         .form-who:focus {
-          transform: translate();
           outline: none;
           border-bottom: solid 1px #629eff;
           background-color: rgba(255, 255, 255, 0.9);
@@ -101,6 +114,7 @@ export const Forms: React.FC<FormsProps> = (props) => {
           background-color: rgba(255, 255, 255, 0.95);
           border-radius: 5px;
           padding: 8px 16px;
+          transition: all 0.3s ease;
         }
 
         .search:hover {
