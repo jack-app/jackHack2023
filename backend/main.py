@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Flask, request
+from flask_cors import CORS
 import chat
 import image
 
 app = Flask(__name__)
-
+cors = CORS(app, resouse = {r"/localhost": {"origins": "3000"}})
 
 @app.route('/', methods=['POST'])
 def main():
@@ -22,10 +23,9 @@ def main():
       if(image_url == 0):
           return "error!"
       
-      else:
           
-          flower_info["image"] = image_url
-          return flower_info
+      flower_info["image"] = image_url
+      return flower_info
 
 if __name__ == '__main__':
     app.run()
