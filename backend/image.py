@@ -9,7 +9,7 @@ from datetime import datetime
 #定数の設定
 HOWMANY = 1
 ASPECTRATE = "4:3" #横:縦
-API = "google"#unsplash/google/bing
+API = "google"#unsplash/google
 #Jsonの読み込み
 if __name__ == "__main__":
     chdir(dirname(__file__))
@@ -17,10 +17,10 @@ if __name__ == "__main__":
 with open("APIkey.json") as f:
     KEYS = load(f)
 
+print(KEYS)
 
-
-def query(url):
-    result = get(url)
+def query(url:str,headers,params):
+    result = get(url,headers=headers,params=params)
     if result.status_code != 200:
         print(result.status_code)
         print(result.reason)
@@ -28,29 +28,55 @@ def query(url):
     return result,0
 
 
+"""
+#画像検索APIにBing Image Searchを用いる場合
+
+def bing(flower_name):
+    try:
+        result,status = query("https://api.cognitive.microsoft.com/bing/v7.0/images/search",
+                    {"Ocp-Apim-Subscription-Key":KEYS["Bing Search API"]["SubscriptionKey"]},
+                    {
+                    "license":"public",
+                    "q":f"(flower|花) {flower_name}",
+                    "imageType":"photo",
+                    "count":HOWMANY,
+                    "aspect":"All"
+                    }
+                    )
+    #https://learn.microsoft.com/ja-jp/bing/search-apis/bing-image-search/reference/query-parameters
+    except:
+        return 0
+    if status == 1:
+        return 0
+    return result
+"""
+
 
 #画像検索APIにCustom search APIを用いる場合
 
 def google(flower_name):
     #Custom search APIに画像を要求
     try:
-        result,status = query("https://customsearch.googleapis.com/customsearch/v1?"
-                     +f"key={KEYS['Custom Search API']['APIKey']}"
-                     +f"&cx={KEYS['Custom Search API']['SearchEngineID']}"
-                     +f"&q='(flower|花) {flower_name}'"
-                     +"&fileType='jpeg png jpg'"
-                     +"&searchType=image"
-                     +"&imgType=photo"
-                     +"&imgSize=xlarge"
-                     +"&num=1"
-                     )
+        result,status = query("https://customsearch.googleapis.com/customsearch/v1",
+                    {},
+                    {
+                    "key":KEYS['Custom Search API']['APIKey'],
+                    "cx":KEYS['Custom Search API']['SearchEngineID'],
+                    "q":f"(flower|花) {flower_name}",
+                    "fileType":"jpeg png jpg",
+                    "searchType":"image",
+                    "imgType":"photo",
+                    "imgSize":"xlarge",
+                    "num":HOWMANY
+                    }
+                    )
+    #https://developers.google.com/custom-search/v1/reference/rest/v1/cse/list?hl=ja
     except:
         return 0
     if status == 1:
         return 0
     
     #抽出返答
-
     return loads(result.content)["items"][0]["link"]
 
 
@@ -76,12 +102,16 @@ def unsplash(flower_name):
         else:
             return 0
 
-    #unsplashAPIに{flower_name}の写真を1つ要求
+    #unsplashAPIに{flower_name}の写真を要求
     try:
-        result,status = query("https://api.unsplash.com/photos/random/?"
-                    +f"client_id={KEYS['Unsplash']['AccessKey']}"
-                    +f"&query=\"{flower_name}\""
-                    +f"&count={HOWMANY}")
+        result,status = query("https://api.unsplash.com/photos/random/",
+                    {},
+                    {
+                    "client_id":KEYS['Unsplash']['AccessKey'],
+                    "query":flower_name,
+                    "count":HOWMANY
+                    }
+                    )
     except:
         return 0
     if status == 1:
@@ -104,13 +134,15 @@ def unsplash(flower_name):
 
 
 
-
 def image(flower_name):
     if API=="unsplash":
         return unsplash(flower_name)
     elif API=="google":
         return google(flower_name)
-
+    """
+    elif API=="bing":
+        return bing(flower_name)
+    """
 
 if __name__ == "__main__":
-    print(image("blue rose"))
+    print(image("black Iris"))
