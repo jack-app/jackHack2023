@@ -6,8 +6,8 @@ export default function Home() {
     <>
       <div className="container">
         <div className="titles">
-          <h1 className="title">タイトル</h1>
-          <h2 className="subtitle">サブタイトル</h2>
+          <h1 className="title">Floral Gifter</h1>
+          <h2 className="subtitle">〜 渡したい気持ちと花を相手に 〜</h2>
         </div>
         <div className="start">
           <Link href="/search">
