@@ -19,7 +19,9 @@ export default function Search() {
   const handleClick = async (opponent: string, feeling: string) => {
     setIsLoading(true);
     await axios
-      .post("http://127.0.0.1:5000", { content: { opponent: opponent, feeling: feeling } })
+      .post("https://floral-gifter-q967.onrender.com", {
+        content: { opponent: opponent, feeling: feeling },
+      })
       .then((res) => {
         setResult(res.data);
         setIsLoading(false);
