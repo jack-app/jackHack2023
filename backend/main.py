@@ -10,7 +10,9 @@ cors = CORS(app, resouse = {r"/localhost": {"origins": "3000"}})
 def main():
     if request.method == 'POST':
       
-      content = request.form["content"]
+      req = request.get_json()
+      content = req["content"]
+      print(content)
 
       # こきくんがやってくれる、chatGPTの関数に値を渡す処理
       flower_info = chat.chat(content)
