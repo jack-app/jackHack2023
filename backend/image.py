@@ -1,7 +1,7 @@
 # ここに画像検索のAPIを叩く処理を書いてね
 #ライブラリのインポート
 from requests import get,post
-from json import load,loads
+from json import loads
 import os 
 from os.path import dirname, join
 from datetime import datetime
@@ -18,15 +18,14 @@ CUSTOM_SEARCH_API_KEY = os.environ.get("CUSTOM_SEARCH_API_KEY")
 CUSTOM_SEARCH_ENGINE_ID = os.environ.get("CUSTOM_SEARCH_ENGINE_ID")
 UNSPLASH_API_ACCESS_KEY = os.environ.get("UNSPLASH_API_ACCESS_KEY")
 
+TRANSLATOR_API_KEY=os.environ.get("TRANSLATOR_API_KEY")
+TRANSLATOR_API_SECRET=os.environ.get("TRANSLATOR_API_SECRET")
+TRANSLATOR_API_USERNAME=os.environ.get("TRANSLATOR_API_USERNAME")
+
 #定数の設定
 HOWMANY = 1
 ASPECTRATE = "4:3" #横:縦
 API = "google"#unsplash/google
-#Jsonの読み込み
-if __name__ == "__main__":
-    os.chdir(dirname(__file__))
-    print(os.getcwd())
-
 
 #アカウントの取得がうまくできず断念.
 """
@@ -87,14 +86,14 @@ def translate(word):
     try:
         result = post("https://mt-auto-minhon-mlt.ucri.jgn-x.jp/api/mt/generalNT_ja_en/",
                     data={
-                        "key":KEYS["translator"]["APIKey"],
-                        "name":KEYS["translator"]["UserName"],
+                        "key":TRANSLATOR_API_KEY,
+                        "name":TRANSLATOR_API_USERNAME,
                         "type":"json",
                         "text":word
                     },
                     auth=OAuth1(
-                        KEYS["translator"]["APIKey"],
-                        KEYS["translator"]["APISecret"]
+                        TRANSLATOR_API_KEY,
+                        TRANSLATOR_API_SECRET
                     )
                     )
     except:
@@ -183,3 +182,4 @@ def image(flower_name):
 
 if __name__ == "__main__":
     print(translate("sunflower"))
+    print(unsplash("sunflower"))
