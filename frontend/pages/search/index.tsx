@@ -14,7 +14,12 @@ interface ResultType {
 
 export default function Search() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [result, setResult] = useState<ResultType | null>(null);
+  const [result, setResult] = useState<ResultType | null>({
+    name: "",
+    image: "",
+    flower_symbolism: "",
+    example: "",
+  });
 
   const handleClick = async () => {
     setIsLoading(true);
