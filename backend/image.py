@@ -17,8 +17,8 @@ if __name__ == "__main__":
 with open("APIkey.json") as f:
     KEYS = load(f)
 
-print(KEYS)
 
+#get処理を分離
 def query(url:str,headers,params):
     result = get(url,headers=headers,params=params)
     if result.status_code != 200:
@@ -28,6 +28,7 @@ def query(url:str,headers,params):
     return result,0
 
 
+#アカウントの取得がうまくできず断念.
 """
 #画像検索APIにBing Image Searchを用いる場合
 
@@ -134,15 +135,28 @@ def unsplash(flower_name):
 
 
 
+def _shift_to_front(list_,element):
+    list_.remove(element)
+    list_.insert(0,element)
+
 def image(flower_name):
+    try_order = [google,unsplash]
     if API=="unsplash":
-        return unsplash(flower_name)
+        _shift_to_front(try_order,unsplash)
     elif API=="google":
-        return google(flower_name)
+        _shift_to_front(try_order,google)
     """
     elif API=="bing":
         return bing(flower_name)
     """
 
+    #複数のAPIを叩けるように処理
+    res = 0
+    for f in try_order:
+        res = f(flower_name)
+        if res != 0:
+            break
+    return res
+
 if __name__ == "__main__":
-    print(image("black Iris"))
+    print(image("blue rose"))
