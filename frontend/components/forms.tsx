@@ -31,6 +31,18 @@ export const Forms: React.FC<FormsProps> = (props) => {
           justify-content: space-around;
           align-items: flex-start;
         }
+
+        .who {
+          font-size: 1.5rem;
+          font-family: serif;
+          font-weight: 100;
+        }
+
+        .feel {
+          font-size: 1.5rem;
+          font-family: serif;
+          font-weight: 100;
+        }
       `}</style>
     </>
   );
