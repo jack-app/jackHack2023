@@ -14,20 +14,16 @@ interface ResultType {
 
 export default function Search() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [result, setResult] = useState<ResultType | null>({
-    name: "",
-    image: "",
-    flower_symbolism: "",
-    example: "",
-  });
+  const [result, setResult] = useState<ResultType | null>(null);
 
-  const handleClick = async () => {
+  const handleClick = async (opponent: string, feeling: string) => {
     setIsLoading(true);
     await axios
-      .post("http://127.0.0.1:5000", { content: { opponent: "お母さん", feeling: "感謝" } })
+      .post("http://127.0.0.1:5000", { content: { opponent: opponent, feeling: feeling } })
       .then((res) => {
         setResult(res.data);
         setIsLoading(false);
+        console.log(res);
       })
       .catch((err) => {
         setIsLoading(false);
