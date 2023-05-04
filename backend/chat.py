@@ -18,33 +18,33 @@ model_engine = "text-davinci-002"
 
 
 def chat(content):
-    # GPT-3にプロンプトを送信して結果を取得する
-    response = openai.ChatCompletion.create(
-      model="gpt-3.5-turbo",
-      messages=[
-        {"role": "system", "content": 'あなたは花を送りたい相手と、伝えたい気持ちから、送るべき花の名前と、花言葉と、花を渡す際の例文を返すアプリです。その出力をそれぞれスペースで区切って入力してください。それ以外の言葉は発さないでください。'},
-        {"role": "user", "content": f"{content['opponent']}さんに{content['feeling']}という気持ちを伝えたいです。"},
-      ]
-    )
+    try:
+        # GPT-3にプロンプトを送信して結果を取得する
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": 'あなたは花を送りたい相手と、伝えたい気持ちから、送るべき花の名前と、花言葉と、花を渡す際の例文を返すアプリです。その出力をそれぞれスペースで区切って入力してください。それ以外の言葉は発さないでください。'},
+                {"role": "system", "content": 'これはあなたの出力の例です。カーネーション 母の愛、感謝、敬意 いつも私を育ててくれてありがとう。これは感謝の気持ちです。'},
+                {"role": "user",
+                    "content": f"{content['opponent']}さんに{content['feeling']}という気持ちを伝えたいです。"},
+            ]
+        )
 
-    responsefix = bytes(response["choices"][0]["message"]["content"], encoding="utf-8").decode("utf-8")
-    responsefix1 = list(map(str,responsefix.split()))
-    print(responsefix1)
-    result = {
-        "name" : responsefix1[0],
-        "flower_symbolism" : responsefix1[1],
-        "example" : responsefix1[2]
-    }
-    print(result)
-    print(type(result))
-    # result = {
-    #     "name": name,
-    #     "flower_symbolism": flower_symbolism,
-    #     "example": example
-    # }
+        responsefix = bytes(
+            response["choices"][0]["message"]["content"], encoding="utf-8").decode("utf-8")
+        responsefix1 = list(map(str, responsefix.split()))
+        print(responsefix1)
+        result = {
+            "name": responsefix1[0],
+            "flower_symbolism": responsefix1[1],
+            "example": responsefix1[2]
+        }
+        print(result)
 
-    return result
-    
+        return result
+    except:
+        return "エラーが発生しました。"
+
 
 if __name__ == '__main__':
     chat(None)

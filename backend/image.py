@@ -1,10 +1,11 @@
 # ここに画像検索のAPIを叩く処理を書いてね
 #ライブラリのインポート
-from requests import get,Response
+from requests import get,post
 from json import load,loads
 import os 
 from os.path import dirname, join
 from datetime import datetime
+from requests_oauthlib import OAuth1
 
 from dotenv import load_dotenv
 
@@ -25,16 +26,6 @@ API = "google"#unsplash/google
 if __name__ == "__main__":
     os.chdir(dirname(__file__))
     print(os.getcwd())
-
-
-#get処理を分離
-def query(url:str,headers,params):
-    result = get(url,headers=headers,params=params)
-    if result.status_code != 200:
-        print(result.status_code)
-        print(result.reason)
-        return result,1
-    return result,0
 
 
 #アカウントの取得がうまくできず断念.
@@ -67,9 +58,9 @@ def bing(flower_name):
 def google(flower_name):
     #Custom search APIに画像を要求
     try:
-        result,status = query("https://customsearch.googleapis.com/customsearch/v1",
-                    {},
-                    {
+        result = get("https://customsearch.googleapis.com/customsearch/v1",
+                    headers={},
+                    params={
                     "key":CUSTOM_SEARCH_API_KEY,
                     "cx":CUSTOM_SEARCH_ENGINE_ID,
                     "q":f"(flower|花) {flower_name}",
@@ -83,13 +74,34 @@ def google(flower_name):
     #https://developers.google.com/custom-search/v1/reference/rest/v1/cse/list?hl=ja
     except:
         return 0
-    if status == 1:
+    if result.status_code != 200:
         return 0
     
     #抽出返答
     return loads(result.content)["items"][0]["link"]
 
 
+
+def translate(word):
+    #少々応答が遅いのがネック
+    try:
+        result = post("https://mt-auto-minhon-mlt.ucri.jgn-x.jp/api/mt/generalNT_ja_en/",
+                    data={
+                        "key":KEYS["translator"]["APIKey"],
+                        "name":KEYS["translator"]["UserName"],
+                        "type":"json",
+                        "text":word
+                    },
+                    auth=OAuth1(
+                        KEYS["translator"]["APIKey"],
+                        KEYS["translator"]["APISecret"]
+                    )
+                    )
+    except:
+        return 0
+    if result.status_code != 200:
+        return 0
+    return result.json()["resultset"]["result"]["text"]
 
 #画像検索APIにunsplashを用いる場合
 
@@ -104,6 +116,9 @@ def unsplash(flower_name):
     """
     global last_update,request_is_vailed
 
+    #unsplashで検索するために英語に変換
+    flower_name=translate(flower_name)
+
     print(f"get:{flower_name}")
     #クエリを使い果たしたらリクエストを投げない。
     if not request_is_vailed:
@@ -114,9 +129,8 @@ def unsplash(flower_name):
 
     #unsplashAPIに{flower_name}の写真を要求
     try:
-        result,status = query("https://api.unsplash.com/photos/random/",
-                    {},
-                    {
+        result = get("https://api.unsplash.com/photos/random/",
+                    params={
                     "client_id":UNSPLASH_API_ACCESS_KEY,
                     "query":flower_name,
                     "count":HOWMANY
@@ -124,7 +138,7 @@ def unsplash(flower_name):
                     )
     except:
         return 0
-    if status == 1:
+    if result.status_code != 200:
         return 0
 
     #結果から画像URLを抽出
@@ -168,4 +182,4 @@ def image(flower_name):
     return res
 
 if __name__ == "__main__":
-    print(image("blue rose"))
+    print(translate("sunflower"))
