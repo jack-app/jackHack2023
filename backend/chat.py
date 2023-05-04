@@ -1,33 +1,30 @@
-import openai
-import io
-import sys
-import json
+import io, sys
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 # ここにchatGPTの検索の処理を書いてね
-try:
-    with open("APIkey.json") as f:
-        KEYS = json.load(f)
+import openai
+import os
+from os.path import dirname, join
+
+from dotenv import load_dotenv
+
+load_dotenv(verbose=True)
+
+dotenv_path = join(dirname(__file__), ".env")
 
 # OpenAI APIを設定
-    openai.api_key = KEYS["Openai API"]["APIKey"]
-except FileNotFoundError:
-    print("APIkey.jsonファイルが存在しません。APIkey.json.exampleを参考にAPIkey.jsonファイルを作成してください。")
-    sys.exit()
+openai.api_key = os.environ.get("OPENAI_API_KEY")
 model_engine = "text-davinci-002"
 
 
 def chat(content):
     try:
-        content = {
-            "opponent": "母親",
-            "feeling": "感謝の気持ち"
-        }
         # GPT-3にプロンプトを送信して結果を取得する
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": 'あなたは花を送りたい相手と、伝えたい気持ちから、送るべき花の名前と、花言葉と、花を渡す際の例文を返すアプリです。その出力をそれぞれスペースで区切って入力してください。それ以外の言葉は発さないでください。'},
+                {"role": "system", "content": 'これはあなたの出力の例です。カーネーション 母の愛、感謝、敬意 いつも私を育ててくれてありがとう。これは感謝の気持ちです。'},
                 {"role": "user",
                     "content": f"{content['opponent']}さんに{content['feeling']}という気持ちを伝えたいです。"},
             ]
@@ -43,12 +40,6 @@ def chat(content):
             "example": responsefix1[2]
         }
         print(result)
-        print(type(result))
-        # result = {
-        #     "name": name,
-        #     "flower_symbolism": flower_symbolism,
-        #     "example": example
-        # }
 
         return result
     except:

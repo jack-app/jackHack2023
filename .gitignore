@@ -5,3 +5,4 @@ activateNagoyayuu15.bat
 UnsplashAPIkey.json
 APIkey.json
 __pycache__
+.env

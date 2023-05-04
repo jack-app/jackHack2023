@@ -2,10 +2,21 @@
 #ライブラリのインポート
 from requests import get,post
 from json import load,loads
-from os import chdir,getcwd
-from os.path import dirname
+import os 
+from os.path import dirname, join
 from datetime import datetime
 from requests_oauthlib import OAuth1
+
+from dotenv import load_dotenv
+
+load_dotenv(verbose=True)
+
+dotenv_path = join(dirname(__file__), ".env")
+
+#環境変数の読み込み
+CUSTOM_SEARCH_API_KEY = os.environ.get("CUSTOM_SEARCH_API_KEY")
+CUSTOM_SEARCH_ENGINE_ID = os.environ.get("CUSTOM_SEARCH_ENGINE_ID")
+UNSPLASH_API_ACCESS_KEY = os.environ.get("UNSPLASH_API_ACCESS_KEY")
 
 #定数の設定
 HOWMANY = 1
@@ -13,10 +24,8 @@ ASPECTRATE = "4:3" #横:縦
 API = "google"#unsplash/google
 #Jsonの読み込み
 if __name__ == "__main__":
-    chdir(dirname(__file__))
-    print(getcwd())
-with open("APIkey.json") as f:
-    KEYS = load(f)
+    os.chdir(dirname(__file__))
+    print(os.getcwd())
 
 
 #アカウントの取得がうまくできず断念.
@@ -52,8 +61,8 @@ def google(flower_name):
         result = get("https://customsearch.googleapis.com/customsearch/v1",
                     headers={},
                     params={
-                    "key":KEYS['Custom Search API']['APIKey'],
-                    "cx":KEYS['Custom Search API']['SearchEngineID'],
+                    "key":CUSTOM_SEARCH_API_KEY,
+                    "cx":CUSTOM_SEARCH_ENGINE_ID,
                     "q":f"(flower|花) {flower_name}",
                     "fileType":"jpeg png jpg",
                     "searchType":"image",
@@ -122,7 +131,7 @@ def unsplash(flower_name):
     try:
         result = get("https://api.unsplash.com/photos/random/",
                     params={
-                    "client_id":KEYS['Unsplash']['AccessKey'],
+                    "client_id":UNSPLASH_API_ACCESS_KEY,
                     "query":flower_name,
                     "count":HOWMANY
                     }

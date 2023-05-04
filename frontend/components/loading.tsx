@@ -11,8 +11,8 @@ export const Loading: React.FC = () => {
         .loading {
           opacity: 0.6;
           position: absolute;
-          width: 400px;
-          height: 200px;
+          width: 100%;
+          height: 100%;
           top: 0px;
           left: 0px;
         }
@@ -21,12 +21,13 @@ export const Loading: React.FC = () => {
           width: 100px;
           height: 100px;
           border-radius: 150px;
-          border: 15px solid #fff;
-          border-top-color: rgba(0, 0, 0, 0.3);
+          border: 10px solid #fff;
+          border-top-color: rgba(0, 0, 0, 0.2);
           box-sizing: border-box;
           position: absolute;
-          top: 20%;
-          left: 35%;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
           animation: circle 1s linear infinite;
           -webkit-animation: circle 1s linear infinite;
         }
