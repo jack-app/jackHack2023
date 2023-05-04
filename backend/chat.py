@@ -1,15 +1,19 @@
 import io, sys
-import json
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 # ここにchatGPTの検索の処理を書いてね
 import openai
+import os
+from os.path import dirname, join
 
-with open("APIkey.json") as f:
-    KEYS = json.load(f)
+from dotenv import load_dotenv
+
+load_dotenv(verbose=True)
+
+dotenv_path = join(dirname(__file__), ".env")
 
 # OpenAI APIを設定
-openai.api_key = KEYS["Openai API"]["APIKey"]
+openai.api_key = os.environ.get("OPENAI_API_KEY")
 model_engine = "text-davinci-002"
 
 
