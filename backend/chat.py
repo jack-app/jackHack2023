@@ -5,8 +5,11 @@ sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 # ここにchatGPTの検索の処理を書いてね
 import openai
 
+with open("APIkey.json") as f:
+    KEYS = json.load(f)
+
 # OpenAI APIを設定
-openai.api_key = "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"
+openai.api_key = KEYS["Openai API"]["APIKey"]
 model_engine = "text-davinci-002"
 
 
