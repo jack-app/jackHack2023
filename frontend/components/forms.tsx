@@ -18,7 +18,9 @@ export const Forms: React.FC<FormsProps> = (props) => {
           <div>どんな気持ちを伝えますか？</div>
           <textarea className="form-feel" />
         </div>
-        <button onClick={handleClick}>検索</button>
+        <button onClick={handleClick} className="search">
+          検索
+        </button>
       </div>
       <style jsx>{`
         .forms {
@@ -33,15 +35,78 @@ export const Forms: React.FC<FormsProps> = (props) => {
         }
 
         .who {
+          width: 100%;
           font-size: 1.5rem;
           font-family: serif;
           font-weight: 100;
+        }
+
+        .form-who {
+          width: 100%;
+          border: none;
+          border-bottom: solid 1px #898989;
+          background-color: rgba(255, 255, 255, 0.55);
+          font-size: 1.2rem;
+          font-family: serif;
+          font-weight: 100;
+          padding: 10px;
+          margin-top: 20px;
+          transition: all 0.3s ease;
+        }
+
+        .form-who:focus {
+          transform: translate();
+          outline: none;
+          border-bottom: solid 1px #629eff;
+          background-color: rgba(255, 255, 255, 0.9);
         }
 
         .feel {
           font-size: 1.5rem;
           font-family: serif;
           font-weight: 100;
+          width: 100%;
+        }
+
+        .form-feel {
+          resize: none;
+          width: 100%;
+          border: none;
+          border-bottom: solid 1px #898989;
+          background-color: rgba(255, 255, 255, 0.55);
+          font-family: serif;
+          font-weight: 100;
+          font-size: 1.2rem;
+          padding: 10px;
+          margin-top: 20px;
+          transition: all 0.3s ease;
+        }
+
+        .form-feel:focus {
+          transform: translate();
+          outline: none;
+          border-bottom: solid 1px #629eff;
+          background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .search {
+          margin-left: auto;
+          margin-right: auto;
+          font-family: serif;
+          font-weight: 100;
+          font-size: 1.2rem;
+          letter-spacing: 2px;
+          border: none;
+          box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+          background-color: rgba(255, 255, 255, 0.95);
+          border-radius: 5px;
+          padding: 8px 16px;
+        }
+
+        .search:hover {
+          cursor: pointer;
+          background-color: rgba(255, 255, 255, 1);
+          box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
         }
       `}</style>
     </>
