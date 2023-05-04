@@ -23,6 +23,7 @@ export default function Search() {
       .then((res) => {
         setResult(res.data);
         setIsLoading(false);
+        console.log(res);
       })
       .catch((err) => {
         setIsLoading(false);
