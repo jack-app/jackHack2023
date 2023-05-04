@@ -1,10 +1,11 @@
-from flask import Flask, request
+from flask import Flask, abort, request
 from flask_cors import CORS
 import chat
 import image
 
 app = Flask(__name__)
-cors = CORS(app, resouse = {r"/localhost": {"origins": "3000"}})
+cors = CORS(app)
+
 
 @app.route('/', methods=['POST'])
 def main():
@@ -23,7 +24,7 @@ def main():
 
       # エラー処理
       if(image_url == 0):
-          return "error!"
+          abort(404)
       
           
       flower_info["image"] = image_url
