@@ -16,14 +16,20 @@ npm run dev
 
 ## バックエンドのセットアップ
 
-- pip を使ってる人
+1. パッケージのインストール
 
 ```
 pip install -r requirements.txt
 ```
 
-- conda を使ってる人
+2. ホスティング
+
+開発環境の場合
 
 ```
-conda env create -f requirements.yaml
+python3 main.py 
+```
+本番環境の場合
+```
+gunicorn main:app
 ```
