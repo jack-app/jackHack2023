@@ -29,7 +29,7 @@ export default function Search() {
       })
       .catch((err) => {
         setIsLoading(false);
-        alert(err);
+        alert("回答の生成に失敗しました。もう一度お試しください。");
         console.error(err);
       });
   };
